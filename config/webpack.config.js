@@ -10,7 +10,7 @@ module.exports = {
     bundle: path.join(__dirname, '..', 'src', 'index.tsx'),
   },
   output: {
-    path: path.join(__dirname, '..', 'dist'),
+    path: path.join(__dirname, '..', 'docs'),
     filename: 'js/[name].[hash].js',
     chunkFilename: 'static/js/[name].[hash].chunk.js',
   },
