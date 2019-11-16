@@ -1,6 +1,7 @@
 import React, { FC, ChangeEvent, useState, useCallback } from 'react';
 import Title from '../components/Title';
 import CalculationForm from '../components/CalculationForm';
+import OptionButton from '../components/OptionButton';
 import Result from '../components/Result';
 import styled from 'styled-components';
 import { calc } from '../utils/Calc';
@@ -58,30 +59,35 @@ const App: FC<AppProps> = (props: AppProps) => {
     [day],
   );
 
+  const [seventeen, setSeventeen] = useState(false);
+
   const displayYear = (year: number, month: number, day: number): number => {
-    return calc(year, month, day).age;
+    return calc(year, month, day, seventeen).age;
   };
 
   const displayMonth = (year: number, month: number, day: number): number => {
-    return calc(year, month, day).month;
+    return calc(year, month, day, seventeen).month;
   };
 
   return (
-    <Div>
-      <Title>年齢計算</Title>
-      <Result
-        age={displayYear(year, month, day)}
-        month={displayMonth(year, month, day)}
-      />
-      <CalculationForm
-        year={year}
-        onChangeYear={onChangeYear}
-        month={month}
-        onChangeMonth={onChangeMonth}
-        day={day}
-        onChangeDay={onChangeDay}
-      />
-    </Div>
+    <>
+      <Div>
+        <Title>年齢計算</Title>
+        <Result
+          age={displayYear(year, month, day)}
+          month={displayMonth(year, month, day)}
+        />
+        <CalculationForm
+          year={year}
+          onChangeYear={onChangeYear}
+          month={month}
+          onChangeMonth={onChangeMonth}
+          day={day}
+          onChangeDay={onChangeDay}
+        />
+      </Div>
+      <OptionButton active={seventeen} onChange={setSeventeen} />
+    </>
   );
 };
 
