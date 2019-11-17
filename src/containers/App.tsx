@@ -24,11 +24,10 @@ const App: FC<AppProps> = (props: AppProps) => {
   const onChangeYear = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
-      if (value === '') {
-        return;
-      }
-      const year = Number(value);
+      const numValue = value.replace(/[^0-9]/g, '');
+      const year = Number(numValue);
       setYear(year);
+      updateAge(year, month, day);
     },
     [year],
   );
@@ -37,11 +36,13 @@ const App: FC<AppProps> = (props: AppProps) => {
   const onChangeMonth = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
-      if (value === '') {
+      const numValue = value.replace(/[^0-9]/g, '');
+      const month = Number(numValue);
+      if (month < 1 || 12 < month) {
         return;
       }
-      const month = Number(value);
       setMonth(month);
+      updateAge(year, month, day);
     },
     [month],
   );
@@ -50,33 +51,33 @@ const App: FC<AppProps> = (props: AppProps) => {
   const onChangeDay = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
-      if (value === '') {
+      const numValue = value.replace(/[^0-9]/g, '');
+      const day = Number(numValue);
+      if (day < 1 || 31 < day) {
         return;
       }
-      const day = Number(value);
       setDay(day);
+      updateAge(year, month, day);
     },
     [day],
   );
 
   const [seventeen, setSeventeen] = useState(false);
 
-  const displayYear = (year: number, month: number, day: number): number => {
-    return calc(year, month, day, seventeen).age;
-  };
+  const [age, setAge] = useState(0);
+  const [ageMonth, setAgeMonth] = useState(0);
 
-  const displayMonth = (year: number, month: number, day: number): number => {
-    return calc(year, month, day, seventeen).month;
+  const updateAge = (year: number, month: number, day: number) => {
+    const c = calc(year, month, day, seventeen);
+    setAge(c.age);
+    setAgeMonth(c.month);
   };
 
   return (
     <>
       <Div>
         <Title>年齢計算</Title>
-        <Result
-          age={displayYear(year, month, day)}
-          month={displayMonth(year, month, day)}
-        />
+        <Result age={age} month={ageMonth} />
         <CalculationForm
           year={year}
           onChangeYear={onChangeYear}

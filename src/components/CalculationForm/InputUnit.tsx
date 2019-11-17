@@ -15,12 +15,21 @@ interface InputUnitProps {
 }
 
 const InputUnit = (props: InputUnitProps) => {
+  const onFocus = (event: ChangeEvent<HTMLInputElement>) => {
+    const target = event.target;
+    if (!target) {
+      return;
+    }
+    target.selectionStart = 0;
+    target.selectionEnd = target.value.length;
+  };
+
   return (
     <>
       <Input
-        type="number"
         value={props.inputValue}
         onChange={props.onChangeValue}
+        onFocus={onFocus}
       />
       {props.unit}
     </>
