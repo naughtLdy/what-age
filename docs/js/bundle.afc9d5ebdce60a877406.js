@@ -15684,34 +15684,37 @@ object-assign
         [n, r] = a.useState(t.year),
         i = a.useCallback(
           (e) => {
-            const t = e.target.value;
-            if ('' === t) return;
-            const n = Number(t);
-            r(n);
+            const t = e.target.value.replace(/[^0-9]/g, ''),
+              n = Number(t);
+            r(n), x(n, c, y);
           },
           [n],
         ),
         [c, h] = a.useState(t.month),
         m = a.useCallback(
           (e) => {
-            const t = e.target.value;
-            if ('' === t) return;
-            const n = Number(t);
-            h(n);
+            const t = e.target.value.replace(/[^0-9]/g, ''),
+              r = Number(t);
+            r < 1 || 12 < r || (h(r), x(n, r, y));
           },
           [c],
         ),
         [y, v] = a.useState(t.day),
         g = a.useCallback(
           (e) => {
-            const t = e.target.value;
-            if ('' === t) return;
-            const n = Number(t);
-            v(n);
+            const t = e.target.value.replace(/[^0-9]/g, ''),
+              r = Number(t);
+            r < 1 || 31 < r || (v(r), x(n, c, r));
           },
           [y],
         ),
-        [b, w] = a.useState(!1);
+        [b, w] = a.useState(!1),
+        [k, S] = a.useState(0),
+        [T, E] = a.useState(0),
+        x = (e, t, n) => {
+          const r = f.calc(e, t, n, b);
+          S(r.age), E(r.month);
+        };
       return a.default.createElement(
         a.default.Fragment,
         null,
@@ -15719,10 +15722,7 @@ object-assign
           p,
           null,
           a.default.createElement(o.default, null, '年齢計算'),
-          a.default.createElement(s.default, {
-            age: ((e, t, n) => f.calc(e, t, n, b).age)(n, c, y),
-            month: ((e, t, n) => f.calc(e, t, n, b).month)(n, c, y),
-          }),
+          a.default.createElement(s.default, { age: k, month: T }),
           a.default.createElement(u.default, {
             year: n,
             onChangeYear: i,
@@ -16129,17 +16129,21 @@ object-assign
   margin-right: 5px;
   font-size: 20px;
 `;
-    t.default = (e) =>
-      i.default.createElement(
+    t.default = (e) => {
+      return i.default.createElement(
         i.default.Fragment,
         null,
         i.default.createElement(a, {
-          type: 'number',
           value: e.inputValue,
           onChange: e.onChangeValue,
+          onFocus: (e) => {
+            const t = e.target;
+            t && ((t.selectionStart = 0), (t.selectionEnd = t.value.length));
+          },
         }),
         e.unit,
       );
+    };
   },
   function(e, t, n) {
     'use strict';
